@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+
+</head>
+
+<body>
+
+    <!-- End Example Code -->
+<center>
+    <font size="6">Калькулятор праздников</font>
+	<form id="form--calc">
+		<div class="calc__group--input">
+			<label for=""><input type="radio" name="test1" value="0">0</label>
+			<label for=""><input type="radio" name="test1" value="105">105</label>
+        </div>
+		<div class="calc__group--input">
+			<label for=""><input type="radio" name="test2" value="0">0</label>
+			<label for=""><input type="radio" name="test2" value="165" checked>165</label>
+		</div>
+		<div class="calc__group--input">
+			<label for=""><input type="radio" name="test3" value="0">0</label>
+			<label for=""><input type="radio" name="test3" value="185">185</label>
+		</div>
+		<div class="calc__group--input">
+			<label for=""><input type="radio" name="test4" value="0">0</label>
+			<label for=""><input type="radio" name="test4" value="125" checked>125</label>
+		</div>
+		<div class="calc__group--input">
+			<label for=""><input  type="checkbox" name="test5" value="625" checked>625</label>
+		</div>
+		<div class="calc__group--input">
+			<label for=""><input  type="checkbox" name="test5" value="125" checked>125</label>
+		</div>
+        <div class="calc__group--input">
+			<label for=""><input  type="checkbox" name="test6" value="9999999999" checked>9999999999</label>
+		</div>
+		<div id="summ">0</div>
+	</form></center>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+	var calc = {
+		summ: 0,
+		valueArray: (function () {
+			var array = [],
+				arrayLength = $("#form--calc .calc__group--input").length;
+			for (var i = 0; i < arrayLength; i++) {
+				array[i] = parseInt($("#form--calc .calc__group--input").eq(i).find("input:checked").attr("value")) || 0;
+			};
+			return array;
+		})(),
+		summation: function () {
+			var summ = 0,
+				i = this.valueArray.length - 1;
+			for (; i >= 0; i--) {
+				summ += this.valueArray[i];
+			};
+			this.summ = summ;
+			$("#summ").html(calc.summ);
+		},
+		changeEvent: function () {
+			$("input[type='radio']").change(function () {
+				var element = event.target,
+					elementValue = parseInt(element.value),
+					elementId = $(element).parents(".calc__group--input").index();
+				calc.valueArray[elementId] = elementValue;
+				calc.summation ();
+			});
+			$("input[type='checkbox']").change(function () {
+				var element = event.target,
+					elementValue = parseInt(element.value),
+					elementId = $(element).parents(".calc__group--input").index();
+				if (!element.checked) {
+					elementValue = 0;
+				};
+				calc.valueArray[elementId] = elementValue;
+				calc.summation ();
+			});
+		},
+		init: function () {
+			calc.summation ();
+			calc.changeEvent ();
+		}
+	};
+	calc.init ();
+</script>
+
+</body>
+</html>
